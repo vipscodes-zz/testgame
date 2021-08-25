@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SiOcong</title>
+    <script src="js/phaser.min.js"></script>
+    <script src="js/scene2.js"></script>
+    <script src="js/play.js"></script>
+    <style>
+      canvas {
+        display: block;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+
+  <body></body>
+  <script>
+    const domains = ["http://127.0.0.1:5500", "https://admin-planetgameid.vercel.app", "http://localhost:3000", "https://planetgameindonesia-api.vercel.app", "https://planetgameid.vercel.app", "https://planetgame.id", "https://www.planetgame.id"];
+
+    window.onmessage = function (e) {
+      if (!domains.includes(e.origin)) return;
+      var payload = JSON.parse(e.data);
+      switch (payload.method) {
+        case "set":
+          localStorage.setItem(payload.key, JSON.stringify(payload.data));
+          break;
+        case "get":
+          let parent = window.parent;
+          let data = localStorage.getItem(payload.key);
+          parent.postMessage(data, "*");
+          break;
+        case "remove":
+          localStorage.removeItem(payload.key);
+          break;
+      }
+    };
+  </script>
+</html>
+
+<!-- https://labs.phaser.io/index.html -->
+<!-- https://photonstorm.github.io/phaser3-docs/index.html -->
